@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Word Quiz Game</string>
+    <string name="play_game_label">Play Game</string>
+    <string name="high_score_label">High Score</string>
+    <string name="logo">Logo</string>
+    <string name="KEY_DIFF">name</string>
+</resources>
