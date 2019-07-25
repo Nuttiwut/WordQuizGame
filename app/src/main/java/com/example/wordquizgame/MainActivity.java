@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = MainActivity.class.getName();
     static final String KEY_DIFF = "name";
-    private final String[] diff = {"Easy", "Medium", "Hard"};
+    static final String[] diff = {"Easy", "Medium", "Hard"};
 
     private Button mHightScoreButton;
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                        intent.putExtra(KEY_DIFF, which);
+                        intent.putExtra(KEY_DIFF, diff[which]);
                         startActivity(intent);
                         Log.i(TAG, "ระดับความยาก: " + diff[which]);
                     }

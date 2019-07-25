@@ -1,5 +1,6 @@
 package com.example.wordquizgame;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
@@ -29,11 +30,14 @@ import static com.example.wordquizgame.db.MyDatabaseHelper.TABLE_NAME_WORD;
 public class GameActivity extends AppCompatActivity {
 
     private static final String TAG = GameActivity.class.getName();
+    static final String KEY_DIFF = "name";
+    private int randomImage;
+
 
     private List<Word> mWordList = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
@@ -50,17 +54,48 @@ public class GameActivity extends AppCompatActivity {
 
             Word word = new Word(name, picture);
             mWordList.add(word);
+            Log.i(TAG,"Number of word: " + mWordList.size());
 
         }
 
         for (Word w : mWordList) {
             Log.i(TAG, "name: " + w.getName() + ", picture: " + w.getPicture());
         }
-
         Random random = new Random();
-        int randomIndex = random.nextInt(mWordList.size());
+        int randomIndex;
 
-        final Word answerWord = mWordList.get(randomIndex);
+        Word[] choiceWord = new Word[mWordList.size()];
+        Log.i(TAG,"mWordList Size : "+ mWordList.size());
+
+        int countRandom = mWordList.size();
+
+        //Random
+        for (int i = 0; i < countRandom; i++) {
+            randomIndex = random.nextInt(mWordList.size());
+            choiceWord[i] = mWordList.get(randomIndex);
+            Log.i(TAG,"Word random : "+ choiceWord[i]);
+            mWordList.remove(randomIndex);
+        }
+        //รับค่าจากหน้าแรก
+        int levelDifficult = 0;
+        Intent intent = getIntent();
+        String difficultLevel = intent.getStringExtra(KEY_DIFF);
+        Log.i(TAG,""+ difficultLevel);
+
+
+
+        switch (difficultLevel) {
+            case "Easy": levelDifficult = 1;
+                randomImage = random.nextInt(1);
+                break;
+            case "Medium": levelDifficult = 2;
+                randomImage = random.nextInt(3);
+                break;
+            case "Hard": levelDifficult = 3;
+                randomImage = random.nextInt(3);
+        }
+
+        final Word answerWord = choiceWord[randomImage];
         Drawable drawable = answerWord.getPictureDrawable(GameActivity.this);
 
         ImageView questionImageView = findViewById(R.id.question_image_view);
@@ -69,16 +104,24 @@ public class GameActivity extends AppCompatActivity {
         TableLayout table = findViewById(R.id.choices_table_layout);
 //        TableRow tr =(TableRow) table.getChildAt(0);
 
-        for (int row = 0; row < 3; row++){
-            TableRow tr = (TableRow) table.getChildAt(row);
 
+        //แถวของคำตอบ
+        int rowAnswer = 0;
+        for (int row = 0; row < levelDifficult; row++){
+            TableRow tr = (TableRow) table.getChildAt(row);
+            //คอลั่มของคำตอบ
             for (int i = 0; i < 2; i++) {
-                randomIndex = random.nextInt(mWordList.size());
-                Word choiceWord = mWordList.get(randomIndex);
+
+//                randomIndex = random.nextInt(mWordList.size());
+//                Word choiceWord = mWordList.get(randomIndex);
+//
 
                 Button choiceButton = new Button(GameActivity.this);
-                choiceButton.setText(choiceWord.getName());
+                choiceButton.setText(choiceWord[rowAnswer].getName());
                 tr.addView(choiceButton);
+
+                Log.i(TAG,"" +rowAnswer);
+                rowAnswer++;
 
                 choiceButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -96,8 +139,9 @@ public class GameActivity extends AppCompatActivity {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
+
                                     //วนกลับไปสุ่มคำถามใหม่
-                                    
+
 
                                 }
                             }, 2000);
@@ -107,6 +151,7 @@ public class GameActivity extends AppCompatActivity {
 
                     }
                 });
+//                mWordList.remove(randomIndex);
             }
         }
 

@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.nfc.Tag;
+import android.util.Log;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
@@ -32,8 +34,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE_WORD);
 
-        String[] names = {"Cat", "Dog", "Lion", "Dolphin", "Koala"};
-        String[] picture = {"cat.png", "dog.png", "lion.png", "dolphin.png", "koala.png"};
+        String[] names = new String[]{"Rabbit", "Dog", "Lion", "Dolphin", "Koala", "Pig", "Tiger", "Cat"};
+        String[] picture = {"rabbit.png", "dog.png", "lion.png", "dolphin.png", "koala.png", "pig.png", "tiger.png", "cat.png"};
 
         ContentValues cv ;
         for (int i = 0;i < names.length; i++){
