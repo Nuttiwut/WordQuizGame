@@ -1,5 +1,6 @@
 package com.example.wordquizgame;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -32,6 +33,7 @@ public class GameActivity extends AppCompatActivity {
     private static final String TAG = GameActivity.class.getName();
     static final String KEY_DIFF = "name";
     private int randomImage;
+
 
 
     private List<Word> mWordList = new ArrayList<>();
@@ -83,7 +85,7 @@ public class GameActivity extends AppCompatActivity {
         Log.i(TAG,""+ difficultLevel);
 
 
-
+        assert difficultLevel != null;
         switch (difficultLevel) {
             case "Easy": levelDifficult = 1;
                 randomImage = random.nextInt(1);
@@ -139,6 +141,10 @@ public class GameActivity extends AppCompatActivity {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
+                                    Intent intent = new Intent();
+
+                                    startActivity(intent);
+
 
                                     //วนกลับไปสุ่มคำถามใหม่
 
